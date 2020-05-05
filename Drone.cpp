@@ -1,12 +1,27 @@
 #include "stdafx.h"
 #include "Drone.h"
-#include <string.h>
+#include <string>
 #include <iostream>
 using namespace std;
 
 
 Drone::Drone() {
 	rotorsNr = 0;
+}
+
+Drone::Drone(string line, char delim) {
+	vector<string> tokens;
+	stringstream ss(line);
+	string item;
+	while (getline(ss, item, delim)) {
+		tokens.push_back(item);
+	}
+	producerName = new char[tokens[0].length() + 1];
+	strcpy_s(producerName, tokens[0].length() + 1, tokens[0].c_str());
+	modelName = new char[tokens[1].length() + 1];
+	strcpy_s(modelName, tokens[1].length() + 1, tokens[1].c_str());
+	nrOfProducts = stoi(tokens[2]);
+	rotorsNr = stoi(tokens[3]);
 }
 
 Drone::Drone(const char* n, const char* l, int s, int nr) :Serie(n, l, s) {
@@ -40,14 +55,6 @@ bool Drone::operator==(const Drone& c) {
 	return (Serie::operator==(c) && (rotorsNr = c.rotorsNr));
 }
 
-ostream& operator<<(ostream& os, Drone c) {
-	if (c.getProducerName())
-	{
-		os << c.getProducerName() << " " << c.getModelName() << " " << c.getNrOfProducts() << " " << c.rotorsNr << endl;
-	}
-	return os;
-}
-
 istream & operator>>(istream &is, Drone &c)
 {
 	cout << "Prodcer Name: ";
@@ -65,7 +72,21 @@ istream & operator>>(istream &is, Drone &c)
 	c.setModelName(modelName);
 	c.setNrOfProducts(nrOfProducts);
 	c.setRotorsNr(nr);
-	delete[] producerName;
-	delete[] modelName;
 	return is;
+}
+
+string Drone::toString(char delim) {
+	string x, y;
+	x = modelName;
+	y = producerName;	
+	return y + delim + x + delim + to_string(nrOfProducts) + delim + to_string(rotorsNr);
+}
+
+Serie* Drone::clone() {
+	Drone* p = new Drone();
+	p->setProducerName(producerName);
+	p->setModelName(modelName);
+	p->setNrOfProducts(nrOfProducts);
+	p->setRotorsNr(rotorsNr);
+	return p;
 }

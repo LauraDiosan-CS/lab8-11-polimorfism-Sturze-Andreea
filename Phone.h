@@ -6,16 +6,18 @@ using namespace std;
 
 class Phone:public Serie {
 private:
-	vector<char*> operatorsGSM;
+	vector<string> operatorsGSM;
 public:
 	Phone();
-	Phone(const char*, const char*, int, vector<char*>);
+	Phone(string, char);
+	Phone(const char*, const char*, int, vector<string>);
 	Phone(const Phone&);
-	vector<char*> getOperatorsGSM();
-	void setOperatorsGSM(vector<char*>);
+	vector<string> getOperatorsGSM();
+	void setOperatorsGSM(vector<string>);
 	Phone& operator=(const Phone&);
 	bool operator==(const Phone&);
-	//friend ostream& operator<<(ostream& os, Phone);
+	string toString(char);
 	friend istream& operator>>(istream&, Phone&);
+	Serie* clone();
 	~Phone();
 };

@@ -1,80 +1,54 @@
 #include "stdafx.h"
 #include "Tests.h"
-#include "Serie.h"
-#include "Phone.h"
-#include "Drone.h"
-#include "RepoFile.h"
-#include "RepoTemplate.h"
 #include <assert.h>
 #include <string.h>
 
 
-void testSerie() {
-	Serie c("ion", "CJ23AAA", 7);
-	assert(strcmp(c.getProducerName(), "ion") == 0);
-	assert(strcmp(c.getModelName(), "CJ23AAA") == 0);
-	assert(c.getNrOfProducts()== 7);
-	Serie c1;
-	assert(c1.getProducerName() == NULL);
-	assert(c1.getModelName() == NULL);
-	assert(c1.getNrOfProducts() ==0);
-	Serie c2(c);
-	assert(strcmp(c2.getProducerName(), "ion") == 0);
-	assert(strcmp(c2.getModelName(), "CJ23AAA") == 0);
-	assert(c2.getNrOfProducts()== 7);
-	c.setProducerName("ana");
-	assert(strcmp(c.getProducerName(), "ana") == 0);
-	c.setModelName("CJ44BBB");
-	assert(strcmp(c.getModelName(), "CJ44BBB") == 0);
-	c.setNrOfProducts(6);
-	assert(c.getNrOfProducts()== 6);
-	Serie c3("ana", "CJ44BBB", 6);
-	assert(c == c3);
-}
-
 void testPhone() {
-	vector<char*> x;
-	/*x[0] = new char[strlen("aa") + 1];
-	strcpy_s(x[0], strlen("aa") + 1, "aa");
-	x[1] = new char[strlen("bb") + 1];
-	strcpy_s(x[1], strlen("bb") + 1, "bb");*/
-	Phone c("ion", "CJ23AAA", 7, x);
+	vector<string> x;
+	x.push_back("aaa");
+	x.push_back("bbb");
+	Phone c("ion", "aaa", 7, x);
 	assert(strcmp(c.getProducerName(), "ion") == 0);
-	assert(strcmp(c.getModelName(), "CJ23AAA") == 0);
+	assert(strcmp(c.getModelName(), "aaa") == 0);
 	assert(c.getNrOfProducts() == 7);
-	//assert(c.getOperatorsGSM() == x);
+	assert(c.getOperatorsGSM() == x);
 	Phone c1;
-	vector<char*> z;
+	vector<string> z;
 	assert(c1.getProducerName() == NULL);
 	assert(c1.getModelName() == NULL);
 	assert(c1.getNrOfProducts() == 0);
 	assert(c1.getOperatorsGSM() == z);
 	Phone c2(c);
 	assert(strcmp(c2.getProducerName(), "ion") == 0);
-	assert(strcmp(c2.getModelName(), "CJ23AAA") == 0);
+	assert(strcmp(c2.getModelName(), "aaa") == 0);
 	assert(c2.getNrOfProducts() == 7);
 	assert(c2.getOperatorsGSM() == x);
 	c.setProducerName("ana");
 	assert(strcmp(c.getProducerName(), "ana") == 0);
-	c.setModelName("CJ44BBB");
-	assert(strcmp(c.getModelName(), "CJ44BBB") == 0);
+	c.setModelName("bbb");
+	assert(strcmp(c.getModelName(), "bbb") == 0);
 	c.setNrOfProducts(6);
 	assert(c.getNrOfProducts() == 6);
-	vector<char*> y;
-	/*y[0] = new char[strlen("aa") + 1];
-	strcpy_s(y[0], strlen("aa") + 1, "aa");
-	y[1] = new char[strlen("cc") + 1];
-	strcpy_s(y[1], strlen("cc") + 1, "c");*/
-	//c.setOperatorsGSM(y);
-	//assert(c.getOperatorsGSM() == y);
-	Phone c3("ana", "CJ44BBB", 6, y);
+	vector<string> y;
+	y.push_back("aa");
+	y.push_back("cc");
+	c.setOperatorsGSM(y);
+	assert(c.getOperatorsGSM() == y);
+	Phone c3("ana", "bbb", 6, y);
 	assert(c == c3);
+	Phone c4("aa,bb,5,bb-cc", ',');
+	assert(strcmp(c4.getProducerName(), "aa") == 0);
+	assert(strcmp(c4.getModelName(), "bb") == 0);
+	assert(c4.getNrOfProducts() == 5);
+	assert(c4.getOperatorsGSM()[0] == "bb");
+	assert(c4.getOperatorsGSM()[1] == "cc");
 }
 
 void testDrone() {
-	Drone c("ion", "CJ23AAA", 7, 2);
+	Drone c("ion", "aaa", 7, 2);
 	assert(strcmp(c.getProducerName(), "ion") == 0);
-	assert(strcmp(c.getModelName(), "CJ23AAA") == 0);
+	assert(strcmp(c.getModelName(), "aaa") == 0);
 	assert(c.getNrOfProducts() == 7);
 	assert(c.getRotorsNr() == 2);
 	Drone c1;
@@ -84,76 +58,139 @@ void testDrone() {
 	assert(c1.getRotorsNr() == 0);
 	Drone c2(c);
 	assert(strcmp(c2.getProducerName(), "ion") == 0);
-	assert(strcmp(c2.getModelName(), "CJ23AAA") == 0);
+	assert(strcmp(c2.getModelName(), "aaa") == 0);
 	assert(c2.getNrOfProducts() == 7);
 	assert(c2.getRotorsNr() == 2);
 	c.setProducerName("ana");
 	assert(strcmp(c.getProducerName(), "ana") == 0);
-	c.setModelName("CJ44BBB");
-	assert(strcmp(c.getModelName(), "CJ44BBB") == 0);
+	c.setModelName("bbb");
+	assert(strcmp(c.getModelName(), "bbb") == 0);
 	c.setNrOfProducts(6);
 	assert(c.getNrOfProducts() == 6);
 	c.setRotorsNr(8);
 	assert(c.getRotorsNr() == 8);
-	Drone c3("ana", "CJ44BBB", 6, 8);
+	Drone c3("ana", "bbb", 6, 8);
 	assert(c == c3);
+	Drone c4("aa,bb,5,7", ',');
+	assert(strcmp(c4.getProducerName(), "aa") == 0);
+	assert(strcmp(c4.getModelName(), "bb") == 0);
+	assert(c4.getNrOfProducts() == 5);
+	assert(c4.getRotorsNr() == 7);
+}
+
+void testUser() {
+	User c("ion", "aaa");
+	assert(c.getUserName()== "ion");
+	assert(c.getPassword()== "aaa");
+	User c1;
+	assert(c1.getUserName() == "");
+	assert(c1.getPassword() == "");
+	c.setUserName("ana");
+	assert(c.getUserName()== "ana");
+	c.setPassword("bbb");
+	assert(c.getPassword()== "bbb");
+	User c3("ana", "bbb");
+	assert(c == c3);
+	assert(c3.toString('/') == "ana/bbb");
+	User c4("aa/bb", '/');
+	assert(c4.getUserName()== "aa");
+	assert(c4.getPassword()== "bb");
 }
 
 void testRepoTemplate() {
-	RepoTemplate<Serie> repo;
-	Serie c("ion", "CJ23AAA", 5);
-	Serie c1("ana", "CJ44BBB", 4);
-	Serie c2("maria", "CJ42BCB", 3);
-	Serie c3("ioana", "B47HHH", 2);
-	Serie cars[] = { c,c1,c2,c3 };
+	RepoTemplate<Drone> repo;
+	Drone c("ion", "AAA", 5, 3);
+	Drone c1("ana", "BBB", 4, 3);
+	Drone c2("maria", "BCB", 3, 6);
+	Drone c3("ioana", "HHH", 2, 3);
+	Drone drones[] = { c,c1,c2,c3 };
 	repo.addElem(c);
 	repo.addElem(c1);
 	repo.addElem(c2);
 	repo.addElem(c3);
-	list<Serie> l = repo.getAll();
+	list<Drone> l = repo.getAll();
 	assert(repo.getSize() == 4);
 	assert(l.front() == c);
 	assert(l.back() == c3);
 	int i = 0;
-	for (list<Serie>::iterator it = l.begin(); it != l.end(); it++)
+	for (list<Drone>::iterator it = l.begin(); it != l.end(); it++)
 	{
-		assert(*it == cars[i]);
+		assert(*it == drones[i]);
 		i++;
 	}
 	repo.delElem(c2);
 	assert(repo.getSize() == 3);
 	assert(repo.findElem(c2) == false);
-	Serie c4("dana", "CJ11LLL", 6);
+	Drone c4("dana", "LLL", 6, 5);
 	repo.updateElem(c1, c4);
 	assert(repo.findElem(c1) == false);
 	assert(repo.getItemFromPos(1) == c4);
 }
 
-void testRepoFile() {
-	RepoFile<Serie> repo("test.txt");
-	Serie c("ion", "CJ23AAA", 5);
-	Serie c1("ana", "CJ44BBB", 4);
-	Serie c2("maria", "CJ42BCB", 3);
-	Serie c3("ioana", "B47HHH", 2);
-	Serie c4("Ion", "B44CCC", 10);
-	Serie c5("Ana", "CJ65AAA", 9);
-	Serie cars[] = { c4,c5, c,c1,c2,c3 };
+void testRepoFileCSV() {
+	SerializerWithoutP<Drone>* s = new SerializerWithoutP<Drone>;
+	RepoFileCSV<Drone> repo("test.csv", s);
+	Drone c("ion", "AAA", 5,2);
+	Drone c1("ana", "BBB", 4,2);
+	Drone c2("maria", "BCB", 3,2);
+	Drone c3("ioana", "HHH", 2,2);
+	Drone c4("Ion", "CCC", 10,2);
+	Drone c5("Ana", "AAA", 9,2);
+	Drone drones[] = { c4,c5, c,c1,c2,c3 };
 	repo.addElem(c);
 	repo.addElem(c1);
 	repo.addElem(c2);
 	repo.addElem(c3);
-	list<Serie> l = repo.getAll();
+	list<Drone> l = repo.getAll();
 	assert(repo.getSize() == 6);
 	int i = 0;
-	for (list<Serie>::iterator it = l.begin(); it != l.end(); it++)
+	for (list<Drone>::iterator it = l.begin(); it != l.end(); it++)
 	{
-		assert(*it == cars[i]);
+		assert(*it == drones[i]);
 		i++;
 	}
 	repo.delElem(c2);
 	assert(repo.getSize() == 5);
 	assert(repo.findElem(c2) == false);
-	Serie c6("dana", "CJ11LLL", 7);
+	Drone c6("dana", "LLL", 7,2);
+	repo.updateElem(c1, c6);
+	assert(repo.findElem(c1) == false);
+	assert(repo.getItemFromPos(3) == c6);
+	repo.addElem(c1);
+	repo.saveToFile();
+	repo.loadFromFile("test.csv");
+	assert(repo.getSize() == 6);
+	assert(repo.getItemFromPos(5) == c1);
+}
+
+void testRepoFileCustom() {
+	SerializerWithoutP<Phone>* s = new SerializerWithoutP<Phone>;
+	RepoFileCustom<Phone> repo("test.txt",s);
+	vector<string> x;
+	x.push_back("Orange");
+	Phone c("ion", "AAA", 5, x);
+	Phone c1("ana", "BBB", 4, x);
+	Phone c2("maria", "BCB", 3, x);
+	Phone c3("ioana", "HHH", 2, x);
+	Phone c4("Ion", "CCC", 10, x);
+	Phone c5("Ana", "AAA", 9, x);
+	Phone phones[] = { c4,c5, c,c1,c2,c3 };
+	repo.addElem(c);
+	repo.addElem(c1);
+	repo.addElem(c2);
+	repo.addElem(c3);
+	list<Phone> l = repo.getAll();
+	assert(repo.getSize() == 6);
+	int i = 0;
+	for (list<Phone>::iterator it = l.begin(); it != l.end(); it++)
+	{
+		assert(*it == phones[i]);
+		i++;
+	}
+	repo.delElem(c2);
+	assert(repo.getSize() == 5);
+	assert(repo.findElem(c2) == false);
+	Phone c6("dana", "LLL", 7, x);
 	repo.updateElem(c1, c6);
 	assert(repo.findElem(c1) == false);
 	assert(repo.getItemFromPos(3) == c6);
@@ -162,4 +199,72 @@ void testRepoFile() {
 	repo.loadFromFile("test.txt");
 	assert(repo.getSize() == 6);
 	assert(repo.getItemFromPos(5) == c1);
+}
+
+
+void testRepoFileCSVP() {
+	SerializerSerie* s = new SerializerSerie;
+	RepoFileCSV<Serie*> repo("testP.csv",s);
+	assert(repo.getSize()==2);
+	Serie* c = new Drone("ion", "AAA", 5, 2);
+	Serie* c1 = new Drone("ana", "BBB", 4, 2);
+	vector<string> x;
+	x.push_back("Orange");
+	Serie* c2 = new Phone("maria", "BCB", 3, x);
+	Serie* c3 = new Drone("ioana", "HHH", 2, 2);
+	Serie* c4 = new Drone("Ion", "CCC", 10, 2);
+	Serie* c5 = new Drone("Ana", "AAA", 9, 2);
+	assert(repo.getItemFromPos(0)->toString(' ') == c4->toString(' '));
+	Serie* drones[] = { c4,c5, c,c1,c2,c3 };
+	repo.addElem(c);
+	repo.addElem(c1);
+	repo.addElem(c2);
+	repo.addElem(c3);
+	list<Serie*> l = repo.getAll();
+	assert(repo.getSize() == 6);
+	int i = 0;
+	for (list<Serie*>::iterator it = l.begin(); it != l.end(); it++)
+	{
+		assert((*it)->toString(' ') == drones[i]->toString(' '));
+		i++;
+	}
+	repo.delElem(c3);
+	assert(repo.getSize() == 5);
+	assert(repo.findElem(c3) == false);
+	Serie* c6 = new Drone("dana", "LLL", 7, 2);
+	repo.updateElem(c1, c6);
+	assert(repo.findElem(c1) == false);
+	assert(repo.getItemFromPos(3) == c6);
+	repo.addElem(c1);
+	repo.saveToFile();
+	repo.loadFromFile("testP.csv");
+	assert(repo.getSize() == 6);
+	assert(repo.getItemFromPos(5)->toString(' ') == c1->toString(' '));
+}
+
+void testService() {
+	Serie* c= new Drone("ion", "AAA", 101,2);
+	Serie* c1 = new Drone("ana", "BBB", 102, 2);
+	Serie* c2 = new Drone("maria", "BCB", 300,2);
+	Serie* c3 = new Drone("ioana", "HHH", 206,2);
+	RepoTemplate<Serie*>* repo = new RepoTemplate<Serie*>;
+	RepoTemplate<User>* rep = new RepoTemplate<User>;
+	Service serv(repo, rep);
+	serv.addToRepo(c);
+	serv.addToRepo(c1);
+	serv.addToRepo(c2);
+	serv.addToRepo(c3);
+	assert(serv.getItemFromPos(0) == c);
+	assert(serv.getItemFromPos(1) == c1);
+	assert(serv.getItemFromPos(2) == c2);
+	assert(serv.getItemFromPos(3) == c3);
+	assert(serv.getRepoSize() == 4);
+	assert(serv.findElemInRepo(c) == true);
+	serv.delFromRepo(c1);
+	assert(serv.getRepoSize() == 3);
+	assert(serv.findElemInRepo(c1) == false);
+	serv.updateInRepo(c, c1);
+	assert(serv.findElemInRepo(c) == false);
+	assert(serv.getItemFromPos(0) == c1);
+	assert(serv.findElemInRepo(c1) == true);
 }
