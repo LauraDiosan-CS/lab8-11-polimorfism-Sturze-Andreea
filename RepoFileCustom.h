@@ -33,6 +33,7 @@ template<class T> RepoFileCustom<T>::RepoFileCustom(const char* file, Serializer
 }
 
 template<class T> RepoFileCustom<T>::~RepoFileCustom() {
+	delete s;
 }
 
 template<class T> void RepoFileCustom<T>::loadFromFile(const char* file) {

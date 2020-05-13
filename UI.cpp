@@ -17,12 +17,19 @@ void UI::printMenu() {
 	cout << "Choose option: ";
 }
 
-void UI::printAll() {
-	list<Serie*> all = service.getFromRepo();
+void UI::printAll(list<Serie*> all) {
 	for (list<Serie*>::iterator it = all.begin(); it != all.end(); it++)
 	{
 		cout << (*it)->toString(' ') << endl;
 	}
+}
+
+void UI::searchByProducerName() {
+	cout << "Producer Name: "; 
+	char x[20];
+	cin >> x;
+	string pr = x;
+	printAll(service.searchByProducer(pr));
 }
 
 void UI::login() {
@@ -39,7 +46,7 @@ void UI::login() {
 		{
 			cout << "Log in successful!" << endl;
 			cout << endl;
-			printAll();
+			printAll(service.getFromRepo());
 		}
 		else
 			cout << "Wrong username or password!" << endl;
@@ -50,6 +57,7 @@ void UI::printMenuOperare() {
 	cout << endl;
 	cout << "\t 1.Add" << endl;
 	cout << "\t 2.Print all" << endl;
+	cout << "\t 3.Search by producer name" << endl;
 	cout << "\t 0.Home" << endl;
 	cout << "Choose option: ";
 }
@@ -70,7 +78,11 @@ void UI::operare() {
 				break;
 			}
 			case 2: {
-				printAll();
+				printAll(service.getFromRepo());
+				break;
+			}
+			case 3: {
+				searchByProducerName();
 				break;
 			}
 			case 0: {
@@ -107,11 +119,11 @@ void UI::add() {
 		try {
 			Phone p;
 			cin >> p;
-			service.validatePhone(p);
 			Serie* s = new Phone(p);
 			service.addToRepo(s);
+			delete s;
 		} 
-		catch (PhoneException e) {
+		catch (SerieException e) {
 			for (int i = 0; i < e.getErrors().size(); i++)
 				cout << e.getErrors()[i];
 		}
@@ -123,6 +135,7 @@ void UI::add() {
 			cin >> d;
 			Serie* s = new Drone(d);
 			service.addToRepo(s);
+			delete s;
 		}
 		catch(SerieException e){
 			for (int i = 0; i < e.getErrors().size(); i++)

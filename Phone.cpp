@@ -21,9 +21,16 @@ Phone::Phone(string line, char delim) {
 	modelName = new char[tokens[1].length() + 1];
 	strcpy_s(modelName, tokens[1].length() + 1, tokens[1].c_str());
 	nrOfProducts = stoi(tokens[2]);
-	stringstream s(tokens[3]);
-	while (getline(s, item, '-')) {
-		operatorsGSM.push_back(item);
+	if (tokens[3] == "is NULL")
+	{
+		vector<string> x;
+		operatorsGSM = x;
+	}
+	else {
+		stringstream s(tokens[3]);
+		while (getline(s, item, '-')) {
+			operatorsGSM.push_back(item);
+		}
 	}
 }
 
@@ -65,7 +72,7 @@ bool Phone::operator==(const Phone& c) {
 
 istream & operator>>(istream &is, Phone &c)
 {
-	cout << "Prodcer Name: ";
+	cout << "Producer Name: ";
 	char* producerName = new char[20];
 	is >> producerName;
 	cout << "Model Name: ";
@@ -78,12 +85,15 @@ istream & operator>>(istream &is, Phone &c)
 	cout << "How many operators?" << endl;
 	is >> i;
 	vector<string> x;
-	char ch[20];
-	cout << "List of GSM operators: " << endl;
-	for (int j = 0;j<i;j++)
+	if (i > 0)
 	{
-		is >> ch;
-		x.push_back(ch);
+		char ch[20];
+		cout << "List of GSM operators: " << endl;
+		for (int j = 0; j < i; j++)
+		{
+			is >> ch;
+			x.push_back(ch);
+		}
 	}
 	c.setProducerName(producerName);
 	c.setModelName(modelName);
@@ -94,9 +104,12 @@ istream & operator>>(istream &is, Phone &c)
 
 string Phone::toString(char delim) {
 	string op;
-	op = operatorsGSM[0];
+	if (operatorsGSM.size() > 0)
+		op = operatorsGSM[0];
+	else
+		op = "is NULL";
 	for (int i = 1; i < operatorsGSM.size(); i++)
-		op = op + " " + operatorsGSM[i];
+		op = op + "-" + operatorsGSM[i];
 	string x, y;
 	x = modelName;
 	y = producerName;

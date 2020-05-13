@@ -240,6 +240,7 @@ void testRepoFileCSVP() {
 	repo.loadFromFile("testP.csv");
 	assert(repo.getSize() == 6);
 	assert(repo.getItemFromPos(5)->toString(' ') == c1->toString(' '));
+	delete c, c1, c2, c3, c4, c5, c6, drones;
 }
 
 void testService() {
@@ -247,17 +248,20 @@ void testService() {
 	Serie* c1 = new Drone("ana", "BBB", 102, 2);
 	Serie* c2 = new Drone("maria", "BCB", 300,2);
 	Serie* c3 = new Drone("ioana", "HHH", 206,2);
-	RepoTemplate<Serie*>* repo = new RepoTemplate<Serie*>;
+	SerializerSerie* s = new SerializerSerie;
+	RepoFileCSV<Serie*>* repo = new RepoFileCSV<Serie*>("", s);
 	RepoTemplate<User>* rep = new RepoTemplate<User>;
+	User u("ana", "aaa");
+	rep->addElem(u);
 	Service serv(repo, rep);
 	serv.addToRepo(c);
 	serv.addToRepo(c1);
 	serv.addToRepo(c2);
 	serv.addToRepo(c3);
-	assert(serv.getItemFromPos(0) == c);
-	assert(serv.getItemFromPos(1) == c1);
-	assert(serv.getItemFromPos(2) == c2);
-	assert(serv.getItemFromPos(3) == c3);
+	assert(serv.getItemFromPos(0)->toString(' ') == c->toString(' '));
+	assert(serv.getItemFromPos(1)->toString(' ') == c1->toString(' '));
+	assert(serv.getItemFromPos(2)->toString(' ') == c2->toString(' '));
+	assert(serv.getItemFromPos(3)->toString(' ') == c3->toString(' '));
 	assert(serv.getRepoSize() == 4);
 	assert(serv.findElemInRepo(c) == true);
 	serv.delFromRepo(c1);
@@ -265,6 +269,15 @@ void testService() {
 	assert(serv.findElemInRepo(c1) == false);
 	serv.updateInRepo(c, c1);
 	assert(serv.findElemInRepo(c) == false);
-	assert(serv.getItemFromPos(0) == c1);
+	assert(serv.getItemFromPos(0)->toString(' ') == c1->toString(' '));
 	assert(serv.findElemInRepo(c1) == true);
+	serv.login("ana", "aaa");
+	assert(serv.loggedIn() == true);
+	serv.logout();
+	assert(serv.loggedIn() == false);
+	list<Serie*> l = serv.searchByProducer("ioana");
+	assert(l.front()->toString(' ') == c3->toString(' '));
+	delete c, c1, c2, c3, s, repo, rep;
+	for (Serie* crt : serv.getFromRepo())
+		delete crt;
 }

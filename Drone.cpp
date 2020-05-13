@@ -57,7 +57,7 @@ bool Drone::operator==(const Drone& c) {
 
 istream & operator>>(istream &is, Drone &c)
 {
-	cout << "Prodcer Name: ";
+	cout << "Producer Name: ";
 	char* producerName = new char[20];
 	is >> producerName;
 	cout << "Model Name: ";
@@ -66,6 +66,7 @@ istream & operator>>(istream &is, Drone &c)
 	cout << "Number of products: ";
 	int nrOfProducts;
 	is >> nrOfProducts;
+	cout << "Number of rotors: ";
 	int nr;
 	is >> nr;
 	c.setProducerName(producerName);

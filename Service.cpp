@@ -8,8 +8,7 @@ Service::~Service() {
 
 int Service::addToRepo(Serie* c) {
 	v.validate(c);
-	int rez = repo->addElem(c);
-	return rez;
+	return repo->addElem(c);
 }
 
 int Service::delFromRepo(Serie* c) {
@@ -64,6 +63,13 @@ bool Service::loggedIn() {
 	return true;
 }
 
-void Service::validatePhone(Phone p) {
-	vp.validate(p);
+list<Serie*> Service::searchByProducer(string pr) {
+	list<Serie*> list;
+	for (Serie* crt : repo->getAll())
+	{
+		string name = crt->getProducerName();
+		if (name == pr)
+			list.push_back(crt);
+	}
+	return list;
 }

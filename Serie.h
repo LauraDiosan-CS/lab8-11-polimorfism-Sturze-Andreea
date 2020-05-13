@@ -25,5 +25,5 @@ public:
 	virtual string toString(char) = 0;
 	friend istream& operator>>(istream&, Serie&);
 	virtual Serie* clone() = 0;
-	~Serie();
+	virtual ~Serie();
 };

@@ -1,10 +1,9 @@
 #pragma once
-#include "Serie.h"
+#include "Drone.h"
 #include "User.h"
 #include "RepoFile.h"
 #include "RepoTemplate.h"
 #include "SerieValidator.h"
-#include "PhoneValidator.h"
 
 class Service {
 private:
@@ -12,7 +11,6 @@ private:
 	RepoTemplate<Serie*> *repo;
 	RepoTemplate<User> *repoUser;
 	SerieValidator v;
-	PhoneValidator vp;
 public:
 	Service(RepoTemplate<Serie*>* r, RepoTemplate<User>* rep) { repo = r; repoUser = rep; };
 	~Service();
@@ -26,5 +24,5 @@ public:
 	bool login(const char*, const char*);
 	void logout();
 	bool loggedIn();
-	void validatePhone(Phone);
+	list<Serie*> searchByProducer(string);
 };

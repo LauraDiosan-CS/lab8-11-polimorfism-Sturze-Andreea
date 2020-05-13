@@ -33,6 +33,7 @@ template<class T> RepoFileCSV<T>::RepoFileCSV(const char* file, Serializer<T>* s
 }
 
 template<class T> RepoFileCSV<T>::~RepoFileCSV() {
+	delete s;
 }
 
 template<class T> void RepoFileCSV<T>::loadFromFile(const char* file) {
