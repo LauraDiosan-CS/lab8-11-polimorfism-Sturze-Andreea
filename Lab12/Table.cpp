@@ -16,6 +16,7 @@ char **Table::getTable() {
 }
 
 void Table::add(Plane v) {
+	val.validate(v, getTable());
 	char beginning[4] = { ' ' };
 	for (int i = 0; i < strlen(v.getBeginning()); i++)
 		beginning[i] = v.getBeginning()[i];
@@ -34,49 +35,78 @@ void Table::add(Plane v) {
 		l2 = 9;
 	else
 		l2 = ending[1] - 49;
-	if (l1 == l2 and l1-2<=9 and l1 + 2 <= 9)
+	if (0 <= l1 and l1 <= 9 and 0 <= l2 and l2 <= 9 and 0 <= c1 and c1 <= 9 and 0 <= c2 and c2 <= 9)
 	{
-		if (c1 < c2 and c2 - c1 == 3)
+		if (l1 == l2 and 0<= l1-2 and l1 - 2 <= 9 and 0<=l1+2 and l1 + 2 <= 9)
 		{
-			table[l1][c1] = '*';
-			for (int i = l1-2; i <= l1+2; i++)
-				table[i][c1+1] = '#';
-			table[l1][c1 + 2] = '#';
-			for (int i = l1 - 1; i <= l1 + 1; i++)
-				table[i][c2] = '#';
+			if (c1 < c2 and c2 - c1 == 3)
+			{
+				table[l1][c1] = '*';
+				for (int i = l1 - 2; i <= l1 + 2; i++)
+					table[i][c1 + 1] = '#';
+				table[l1][c1 + 2] = '#';
+				for (int i = l1 - 1; i <= l1 + 1; i++)
+					table[i][c2] = '#';
+				repo.addElem(v);
 
+			}
+			else if (c1 > c2 and c1 - c2 == 3)
+			{
+				table[l1][c1] = '*';
+				for (int i = l1 - 2; i <= l1 + 2; i++)
+					table[i][c1 - 1] = '#';
+				table[l1][c1 - 2] = '#';
+				for (int i = l1 - 1; i <= l1 + 1; i++)
+					table[i][c2] = '#';
+				repo.addElem(v);
+
+			}
 		}
-		else if(c1 > c2 and c1 - c2 == 3)
-		{
-			table[l1][c1] = '*';
-			for (int i = l1 - 2; i <= l1 + 2; i++)
-				table[i][c1 - 1] = '#';
-			table[l1][c1 - 2] = '#';
-			for (int i = l1 - 1; i <= l1 + 1; i++)
-				table[i][c2] = '#';
+		if (c1 == c2 and 0<=c1-2 and c1 - 2 <= 9 and 0<=c1+2 and c1 + 2 <= 9) {
+			if (l1 < l2 and l2 - l1 == 3)
+			{
+				table[l1][c1] = '*';
+				for (int i = c1 - 2; i <= c1 + 2; i++)
+					table[l1 + 1][i] = '#';
+				table[l1 + 2][c1] = '#';
+				for (int i = c1 - 1; i <= c1 + 1; i++)
+					table[l2][i] = '#';
+				repo.addElem(v);
 
+			}
+			else if (l1 > l2 and l1 - l2 == 3)
+			{
+				table[l1][c1] = '*';
+				for (int i = c1 - 2; i <= c1 + 2; i++)
+					table[l1 - 1][i] = '#';
+				table[l1 - 2][c1] = '#';
+				for (int i = c1 - 1; i <= c1 + 1; i++)
+					table[l2][i] = '#';
+				repo.addElem(v);
+
+			}
 		}
 	}
-	if (c1 == c2 and c1 - 2 <= 9 and c1 + 2 <= 9){
-		if (l1 < l2 and l2 - l1 ==3)
-		{
-			table[l1][c1] = '*';
-			for (int i = c1 - 2; i <= c1 + 2; i++)
-				table[l1+1][i] = '#';
-			table[l1+2][c1] = '#';
-			for (int i = c1 - 1; i <= c1 + 1; i++)
-				table[l2][i] = '#';
+}
 
-		}
-		else if (l1 > l2 and l1 - l2 == 3)
-		{
-			table[l1][c1] = '*';
-			for (int i = c1 - 2; i <= c1 + 2; i++)
-				table[l1 - 1][i] = '#';
-			table[l1 - 2][c1] = '#';
-			for (int i = c1 - 1; i <= c1 + 1; i++)
-				table[l2][i] = '#';
+int Table::getStatus(char pos[4]) {
+	int c1 = pos[0] - 65;
+	int l1;
+	if (pos[1] == '1' and pos[2] == '0')
+		l1 = 9;
+	else
+		l1 = pos[1] - 49;
+	if (table[l1][c1] == '*')
+		return 0;
+	else if (table[l1][c1] == '#')
+		return 1;
+	else if (table[l1][c1] == ' ')
+		return -1;
+}
 
-		}
-		}
+void Table::clear() {
+	for (int i = 0; i < 10; i++)
+		for (int j = 0; j < 10; j++)
+			table[i][j] = ' ';
+	repo.clear();
 }

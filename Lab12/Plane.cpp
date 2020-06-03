@@ -26,3 +26,15 @@ void Plane::setEnd(char* newE) {
 
 Plane::~Plane() {
 }
+
+Plane& Plane::operator=(const Plane& c) {
+	if (this == &c)
+		return *this;
+	strcpy_s(beginning, strlen(c.beginning) + 1, c.beginning);
+	strcpy_s(end, strlen(c.end) + 1, c.end);
+	return *this;
+}
+
+bool Plane::operator==(const Plane& c) {
+	return (strcmp(beginning, c.beginning) == 0 and strcmp(end, c.end) == 0);
+}

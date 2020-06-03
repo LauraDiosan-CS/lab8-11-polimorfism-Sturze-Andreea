@@ -14,4 +14,6 @@ public:
 	char* getEnd();
 	void setBeginning(char*);
 	void setEnd(char*);
+	Plane& operator=(const Plane&);
+	bool operator==(const Plane&);
 };

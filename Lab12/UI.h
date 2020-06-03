@@ -10,7 +10,9 @@ public:
 	UI() {}
 	~UI(){}
 	void run();
+	void play();
 	void printMenu();
 	void showTable(char**);
 	void add();
+	void newGame();
 };

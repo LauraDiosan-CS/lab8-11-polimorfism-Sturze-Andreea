@@ -6,26 +6,40 @@ void UI::printMenu() {
 	cout << endl;
 	cout << "Menu:" << endl;
 	cout << "\t 1.Add" << endl;
+	cout << "\t 2.Play" << endl;
+	cout << "\t 3.New Game" << endl;
 	cout << "\t 0.Exit" << endl;
 	cout << "Choose option: ";
 }
 
 void UI::run() {
-	int option;
+	char option;
 	bool works = true;
-	char **table = serv.getTable();
-	showTable(table);;
+	showTable(serv.getTable());
 	while (works != false)
 	{
 		printMenu();
 		cin >> option;
 		switch (option)
 		{
-		case 1: {
+		case '1': {
 			add();
 			break;
 		}
-		case 0: {
+		case '2': {
+			if (serv.playerPlanes()==3)
+			{
+				serv.createComputerTable();
+				showTable(serv.getTableComp());
+				play();
+			}
+			break;
+		}
+		case '3': {
+			newGame();
+			break;
+		}
+		case '0': {
 			works = false;
 			break;
 		}
@@ -71,7 +85,57 @@ void UI::add() {
 	char* end = new char[4];
 	cout << "End: ";
 	cin >> end;
-	serv.addPlane(begin, end);
+	try {
+		serv.addPlane(begin, end);
+	}
+	catch (PlaneException e) {
+		for (int i = 0; i < e.getErrors().size(); i++)
+			cout << e.getErrors()[i];
+	}
 	char **x = serv.getTable();
 	showTable(x);
+}
+
+void UI::play() {
+	int option;
+	bool works = true;
+	while (works != false)
+	{
+		if (serv.winner != -1)
+		{
+			if (serv.winner == 0)
+				cout << "You win!" << endl;
+			else
+				cout << "Computer wins!" << endl;
+			break;
+		}
+		if (serv.winner == -1) {
+			char* pos = new char[4];
+			cout << "Position: ";
+			cin >> pos;
+			int rez = serv.playerTurn(pos);
+			if (rez == -1)
+				cout << "aer" << endl;
+			else if (rez == 1)
+				cout << "lovit" << endl;
+			else if (rez == 0)
+				cout << "distrus" << endl;
+			else if (rez == -2)
+			{
+				cout << "Wrong position!" << endl;
+				play();
+				break;
+			}
+			serv.computerTurn();
+		}
+		if (serv.winner == -1) {
+			cout << "Computers moves table:" << endl;
+			showTable(serv.getHitComp());
+		}
+	}
+}
+
+void UI::newGame() {
+	serv.newGame();
+	showTable(serv.getTable());
 }
